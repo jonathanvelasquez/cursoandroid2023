@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cursoandroid2023.API.Data;
 
@@ -10,9 +11,11 @@ using cursoandroid2023.API.Data;
 namespace cursoandroid2023.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231010175127_Createtablepersonandupdatetablecountry")]
+    partial class Createtablepersonandupdatetablecountry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,15 +42,10 @@ namespace cursoandroid2023.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("PeopleId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
-
-                    b.HasIndex("PeopleId");
 
                     b.ToTable("Countries");
                 });
@@ -93,22 +91,6 @@ namespace cursoandroid2023.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("People");
-                });
-
-            modelBuilder.Entity("cursoandroid2023.Shared.Entities.Country", b =>
-                {
-                    b.HasOne("cursoandroid2023.Shared.Entities.Person", "People")
-                        .WithMany("Countries")
-                        .HasForeignKey("PeopleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("People");
-                });
-
-            modelBuilder.Entity("cursoandroid2023.Shared.Entities.Person", b =>
-                {
-                    b.Navigation("Countries");
                 });
 #pragma warning restore 612, 618
         }

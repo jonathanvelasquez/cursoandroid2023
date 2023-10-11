@@ -2,47 +2,46 @@
 using cursoandroid2023.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Eventing.Reader;
 
 namespace cursoandroid2023.API.Controllers
 {
     [ApiController]
-    [Route("/api/countries")]
-    public class CountriesController : ControllerBase   
+    [Route("/api/people")]
+    public class PeopleController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public CountriesController(DataContext context)
+        public PeopleController(DataContext context)
         {
             _context = context;
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostAsync(Country country) 
+        public async Task<ActionResult> PostAsync(Person person)
         {
-            _context.Add(country);
+            _context.Add(person);
             await _context.SaveChangesAsync();
-            return Ok(country);
+            return Ok(person);
         }
 
         [HttpGet]
         public async Task<ActionResult> GetAsync()
-        {           
-            return Ok(await _context.Countries.ToListAsync());
+        {
+            return Ok(await _context.People.Include(x => x.Countries).ToListAsync());
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutAsync(Country country)
+        public async Task<ActionResult> PutAsync(Person person)
         {
-            _context.Update(country);
+            _context.Update(person);
             await _context.SaveChangesAsync();
-            return Ok(country);
+            return Ok(person);
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> DeleteAsync(int id) 
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            var afectrows = await _context.Countries.Where(x => x.Id == id).ExecuteDeleteAsync();
+            var afectrows = await _context.People.Where(x => x.Id == id).ExecuteDeleteAsync();
 
             if (afectrows == 0)
             {
@@ -52,5 +51,4 @@ namespace cursoandroid2023.API.Controllers
             return NoContent();
         }
     }
-
 }

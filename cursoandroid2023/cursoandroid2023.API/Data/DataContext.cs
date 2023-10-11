@@ -11,6 +11,8 @@ namespace cursoandroid2023.API.Data
 
         public DbSet<Country> Countries { get; set; }
 
+        public DbSet<Person> People { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
