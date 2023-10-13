@@ -1,0 +1,125 @@
+﻿@inject SweetAlertService sweetAlertService
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />   
+    <div class="container">
+        <div class="row">
+            <!-- Tres campos a la izquierda -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label>Documento:</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="@Person.Document" />
+                        <ValidationMessage For="@(() => Person.Document)" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Nombres:</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="@Person.FirstName" />
+                        <ValidationMessage For="@(() => Person.FirstName)" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Apellidos:</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="@Person.LastName" />
+                        <ValidationMessage For="@(() => Person.LastName)" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tres campos a la derecha -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label>Dirección:</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="@Person.Addres" />
+                        <ValidationMessage For="@(() => Person.Addres)" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Telefono:</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="@Person.Phone" />
+                        <ValidationMessage For="@(() => Person.Phone)" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Correo electronico:</label>
+                    <div>
+                        <InputText class="form-control" @bind-Value="@Person.Email" />
+                        <ValidationMessage For="@(() => Person.Email)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                <button class="btn btn-primary" type="submit" style="margin: 3px;">Guardar Cambios</button>
+                <button class="btn btn-success" @onclick="ReturnAction" style="margin: 3px;">Regresar</button>
+            </div>
+        </div>
+    </div>
+
+    
+</EditForm>
+
+@code {
+    private EditContext editContext = null!;
+
+    [EditorRequired]
+    [Parameter]
+    public Person Person { get; set; } = null!;
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+
+    public bool FormPostedSuccesfully { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        editContext = new(Person);
+    }
+
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formWasModified = editContext.IsModified();
+        if (!formWasModified || FormPostedSuccesfully)
+        {
+            return;
+        }
+
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmacion",
+                Text = "¿Deseas Abandonar la pagina y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
+            });
+
+        var confirm = !string.IsNullOrEmpty(result.Value);
+
+        if (confirm)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+
+    }
+}

@@ -1,0 +1,33 @@
+﻿@page "/people/create"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear persona</h3>
+
+<PersonForm @ref="personForm" Person="person" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Person person = new();
+    private PersonForm? personForm;
+
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/people", person);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        Return();
+    }
+
+    private void Return()
+    {
+        personForm!.FormPostedSuccesfully = true;
+        navigationManager.NavigateTo("/people");
+    }
+}

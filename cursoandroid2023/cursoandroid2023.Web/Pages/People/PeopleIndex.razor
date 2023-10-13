@@ -1,0 +1,111 @@
+﻿@page "/people"
+@inject IRepository Repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+
+<h3>Personas</h3>
+
+<a class="btn btn-primary" href="/people/create">Nueva persona</a>
+
+@if (People is null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Documento</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Dirreción</th>
+                <th>Telefono</th>
+                <th>Correo electronico</th>
+                <th></th>
+            </tr>            
+        </thead>
+        <tbody>
+            @foreach (var people in People!)
+            {
+                <tr>
+                    <td>
+                        @people.Document
+                    </td>
+                    <td>
+                        @people.FirstName
+                    </td>
+                    <td>
+                        @people.LastName
+                    </td>
+                    <td>
+                        @people.Addres
+                    </td>
+                    <td>
+                        @people.Phone
+                    </td>
+                    <td>
+                        @people.Email
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" href="/people/edit/@people.Id">Editar</a>
+                        <button class="btn btn-danger" @onclick=@(() => Delete(people.Id))>Borrar</button>
+                    </td>
+                </tr>               
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    public List<Person>? People { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Load();
+    }
+
+    private async Task Load()
+    {
+        var responseHttp = await Repository.Get<List<Person>>("/api/people");
+        People = responseHttp.Response;
+    }
+
+
+    private async Task Delete(int id)
+    {
+
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Esta seguro que quieres borrar el registro?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
+
+            });
+
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHttp = await Repository.Delete($"/api/people/{id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode != System.Net.HttpStatusCode.NotFound)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+        }
+
+        await Load();
+
+    }
+}

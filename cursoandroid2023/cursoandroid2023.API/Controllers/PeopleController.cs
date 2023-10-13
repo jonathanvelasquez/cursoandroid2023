@@ -24,10 +24,22 @@ namespace cursoandroid2023.API.Controllers
             return Ok(person);
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> GetAsync(int id)
+        {
+            var person = await _context.People.FirstOrDefaultAsync(x => x.Id == id);
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(person);
+        }
+
         [HttpGet]
         public async Task<ActionResult> GetAsync()
         {
-            return Ok(await _context.People.Include(x => x.Countries).ToListAsync());
+            return Ok(await _context.People.ToListAsync());
         }
 
         [HttpPut]

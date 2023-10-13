@@ -39,12 +39,7 @@ namespace cursoandroid2023.Shared.Entities
         [Display(Name = "Correo electronico")]
         [MaxLength(200, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string Email { get; set; } = null!;
-
-        public ICollection<Country>? Countries { get; set; }
-
-        [Display(Name = "Nacionalidades")]
-        public int NationalityNumber => Countries == null ? 0 : Countries.Count;
+        public string Email { get; set; } = null!;        
 
 
     }

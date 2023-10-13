@@ -31,6 +31,18 @@ namespace cursoandroid2023.API.Controllers
             return Ok(await _context.Countries.ToListAsync());
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> GetAsync(int id)
+        {
+            var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
+            if (country == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(country);
+        }
+
         [HttpPut]
         public async Task<ActionResult> PutAsync(Country country)
         {
