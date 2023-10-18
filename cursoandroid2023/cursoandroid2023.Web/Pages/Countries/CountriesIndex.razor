@@ -3,7 +3,6 @@
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 
-
 <h3>Países</h3>
 
 <a class="btn btn-primary" href="/countries/create">Nuevo País</a>
@@ -52,7 +51,8 @@
 
     private async Task Load()
     {
-        var responseHttp = await Repository.Get<List<Country>>("/api/countries");
+        var token = await  Repository.GenerateTokenAsync();
+        var responseHttp = await Repository.Get<List<Country>>("/api/countries", token);
         Countries = responseHttp.Response;
     }
     

@@ -24,7 +24,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var responseHttp = await repository.Get<Person>($"/api/people/{Id}");
+        var token = await repository.GenerateTokenAsync();
+        var responseHttp = await repository.Get<Person>($"/api/people/{Id}", token);
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)

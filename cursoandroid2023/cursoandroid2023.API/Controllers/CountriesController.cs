@@ -1,11 +1,13 @@
 ﻿using cursoandroid2023.API.Data;
 using cursoandroid2023.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Eventing.Reader;
 
 namespace cursoandroid2023.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("/api/countries")]
     public class CountriesController : ControllerBase   

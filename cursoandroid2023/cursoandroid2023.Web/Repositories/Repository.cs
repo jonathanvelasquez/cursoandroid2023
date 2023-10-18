@@ -1,4 +1,8 @@
-﻿using System.Text;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 
 namespace cursoandroid2023.Web.Repositories
@@ -16,8 +20,9 @@ namespace cursoandroid2023.Web.Repositories
         {
             _httpClient = httpClient;
         }
-        public async Task<HttpResponseWrapper<T>> Get<T>(string url)
+        public async Task<HttpResponseWrapper<T>> Get<T>(string url, string token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var responseHttp = await _httpClient.GetAsync(url);
             if (responseHttp.IsSuccessStatusCode) 
             {
@@ -86,5 +91,26 @@ namespace cursoandroid2023.Web.Repositories
             return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
 
+        public Task<string> GenerateTokenAsync()
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("sagdsadgfeSDF674545REFG$%FEfgdslkjfglkjhfgdkljhdR5454545_4TGRGtyo!!kjytkljty"));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, "123456789"), // Puedes establecer un identificador aquí
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // Identificador único del token
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: null,
+                audience: null,
+                claims: claims,
+                expires: DateTime.Now.AddHours(1), // Tiempo de expiración del token
+                signingCredentials: credentials
+            );
+
+            return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
+        }
     }
 }

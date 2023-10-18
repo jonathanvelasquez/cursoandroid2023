@@ -69,7 +69,8 @@ else
 
     private async Task Load()
     {
-        var responseHttp = await Repository.Get<List<Person>>("/api/people");
+        var token = await Repository.GenerateTokenAsync();
+        var responseHttp = await Repository.Get<List<Person>>("/api/people", token);
         People = responseHttp.Response;
     }
 

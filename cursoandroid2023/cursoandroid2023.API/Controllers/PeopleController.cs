@@ -1,10 +1,12 @@
 ﻿using cursoandroid2023.API.Data;
 using cursoandroid2023.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace cursoandroid2023.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("/api/people")]
     public class PeopleController : ControllerBase

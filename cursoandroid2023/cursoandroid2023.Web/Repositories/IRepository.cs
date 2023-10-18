@@ -2,7 +2,7 @@
 {
     public interface IRepository
     {
-        Task<HttpResponseWrapper<T>> Get<T>(string url);
+        Task<HttpResponseWrapper<T>> Get<T>(string url, string token);
 
         Task<HttpResponseWrapper<object>> Post<T>(string url, T model);
 
@@ -14,6 +14,7 @@
 
         Task<HttpResponseWrapper<TResponse>> Put<T, TResponse>(string url, T model);
 
+        Task<string> GenerateTokenAsync();
 
 
     }
