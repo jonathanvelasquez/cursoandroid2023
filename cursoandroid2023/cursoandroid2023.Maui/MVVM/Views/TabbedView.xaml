@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+            xmlns:local="clr-namespace:cursoandroid2023.Maui.MVVM.Views"
+            x:Class="cursoandroid2023.Maui.MVVM.Views.TabbedView"   
+            xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            BackgroundColor="WhiteSmoke"
+            BarBackgroundColor="LightGray"
+            SelectedTabColor="red"
+            UnselectedTabColor="Black">    
+    
+        <local:PersonView />
+        <local:PersonView />
+   
+
+</TabbedPage>

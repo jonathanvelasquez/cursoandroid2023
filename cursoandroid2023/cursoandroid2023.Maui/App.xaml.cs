@@ -1,4 +1,6 @@
-﻿namespace cursoandroid2023.Maui
+﻿using cursoandroid2023.Maui.MVVM.Views;
+
+namespace cursoandroid2023.Maui
 {
     public partial class App : Application
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new TabbedView();
         }
     }
 }

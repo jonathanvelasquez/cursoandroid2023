@@ -7,7 +7,7 @@ using System.Diagnostics.Eventing.Reader;
 
 namespace cursoandroid2023.API.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("/api/countries")]
     public class CountriesController : ControllerBase   
