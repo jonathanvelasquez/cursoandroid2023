@@ -8,10 +8,10 @@
             BackgroundColor="WhiteSmoke"
             BarBackgroundColor="LightGray"
             SelectedTabColor="red"
-            UnselectedTabColor="Black">    
-    
-        <local:PersonView />
-        <local:PersonView />
-   
+            UnselectedTabColor="Black">
+
+    <local:PersonView IconImageSource="person.pgn" />
+    <local:PersonView IconImageSource="world.pgn"/> 
+
 
 </TabbedPage>

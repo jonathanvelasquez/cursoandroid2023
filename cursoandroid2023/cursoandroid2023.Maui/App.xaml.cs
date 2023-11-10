@@ -8,7 +8,7 @@ namespace cursoandroid2023.Maui
         {
             InitializeComponent();
 
-            MainPage = new TabbedView();
+            MainPage = new NavigationPage(new TabbedView());
         }
     }
 }

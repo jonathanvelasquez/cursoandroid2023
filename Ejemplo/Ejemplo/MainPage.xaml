@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ejemplo.MainPage"
+             BackgroundColor="White"
+             Title="Inicio">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="dotnet_bot.svg" Command="{Binding NewPersonCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Label Text="Ingrese la edad del estudiante"
+                   TextColor="Black"
+                   FontSize="15">                
+            </Label>
+            <Entry Placeholder="Ingrese su edad..."
+                   BackgroundColor="LightGray"
+                   TextColor="Black"
+                   Keyboard="Email"
+                   Text="{Binding Edad}">
+                
+            </Entry>
+
+            <Button                
+                Text="Siguiente"
+                BackgroundColor="Black"
+                TextColor="White"
+                HeightRequest="100"
+                WidthRequest="250"
+                BorderColor="Red"
+                BorderWidth="5"
+                HorizontalOptions="Center"
+                Command="{Binding NextCommand}"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
